@@ -1,0 +1,8 @@
+homedir
+data
+checkpoints
+models
+export
+STT
+*.pyc
+data_url.py
