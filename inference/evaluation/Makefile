@@ -2,20 +2,20 @@ default: build
 
 # --- Runtime with Python REST API  ----------------------------------------------------
 
-$(eval COQUI_VERSION = 1.1.0)
+$(eval COQUI_VERSION = 1.2.0)
 
-#$(eval DEFAULT_MODEL = macsen)
-$(eval DEFAULT_MODEL = transcribe)
+$(eval DEFAULT_MODEL = macsen)
+#$(eval DEFAULT_MODEL = transcribe)
 
-#config-macsen: 
-#	$(eval MODEL_NAME = macsen)
-#	$(eval MODEL_VERSION= 21.03)
-#	$(eval PORT_NUMBER = 5503)
+config-macsen: 
+	$(eval MODEL_NAME = macsen)
+	$(eval MODEL_VERSION= 21.03)
+	$(eval PORT_NUMBER = 5503)
 
-config-transcribe: 
-	$(eval MODEL_NAME = transcribe)
-	$(eval MODEL_VERSION = 21.12)
-	$(eval PORT_NUMBER = 5501)
+#config-transcribe: 
+#	$(eval MODEL_NAME = transcribe)
+#	$(eval MODEL_VERSION = 21.12)
+#	$(eval PORT_NUMBER = 5501)
 
 
 
