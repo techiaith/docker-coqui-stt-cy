@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 checkpoint_dir=/checkpoints
 checkpoint_cy_dir="${checkpoint_dir}/cy-macsen"
 
@@ -16,7 +18,7 @@ echo "#### Preparing test set                                                   
 echo "####                                                                            ####"
 echo "####################################################################################"
 set -x
-python3 python/preprocess_macsen_testset.py --csv ${macsen_test_file}
+python3 ${SCRIPT_DIR}/python/preprocess_macsen_testset.py --csv ${macsen_test_file}
 
 
 set +x
@@ -29,5 +31,5 @@ set -x
 python /code/lm_optimizer.py \
   --test_files ${macsen_test_file} \
   --checkpoint_dir ${checkpoint_cy_dir} \
-  --n_trials 50 \
+  --n_trials 100 \
   --scorer ${scorer_file_path}

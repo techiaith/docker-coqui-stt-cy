@@ -1,14 +1,21 @@
 #!/bin/bash
 set -e
+### Force UTF-8 output
+export PYTHONIOENCODING=utf-8
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 commonvoice_data_dir=/data/commonvoice
-
-python3 ${SCRIPT_DIR}/../shared/python/download_commonvoice.py --target_dir ${commonvoice_data_dir}
-
 alphabet_cy_file=/code/bin/bangor_welsh/alphabet.txt
 export_dir=/export/coqui_${COQUI_RELEASE}_${TECHIAITH_RELEASE}/macsen/
+
+set +x
+echo
+echo "####################################################################################"
+echo "#### Downloading CommonVoice training data  (from link in data_url.py)          ####"
+echo "####################################################################################"
+set -x
+python3 ${SCRIPT_DIR}/../shared/python/download_commonvoice.py --target_dir ${commonvoice_data_dir}
 
 
 set +x
@@ -31,8 +38,8 @@ set -x
 
 checkpoint_dir=/checkpoints
 
-checkpoint_cy_dir="${checkpoint_dir}/cy-macsen"
 checkpoint_en_dir="${checkpoint_dir}/en"
+checkpoint_cy_dir="${checkpoint_dir}/cy-macsen"
 
 rm -rf ${checkpoint_en_dir}
 rm -rf ${checkpoint_cy_dir}
@@ -40,7 +47,7 @@ rm -rf ${checkpoint_cy_dir}
 mkdir -p ${checkpoint_en_dir}
 mkdir -p ${checkpoint_cy_dir}
 
-cp -r /checkpoints/coqui/coqui-en-checkpoint/ $checkpoint_en_dir
+cp -rv /checkpoints/coqui/coqui-en-checkpoint/* $checkpoint_en_dir
 
 set +x
 echo
@@ -60,7 +67,7 @@ echo "##########################################################################
 set -x
 python3 -m coqui_stt_training.train \
 	--train_files "${single_train_csv}" \
-	--train_batch_size 48 \
+	--train_batch_size 64 \
 	--drop_source_layers 2 \
 	--epochs 15 \
 	--alphabet_config_path "${alphabet_cy_file}" \

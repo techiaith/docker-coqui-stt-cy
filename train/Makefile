@@ -1,6 +1,6 @@
 default: build
 
-# please update COQUI_RELEASE also in the Dockerfile
+# please remember to update COQUI_RELEASE also in the Dockerfile
 COQUI_RELEASE := 1.2.0
 TECHIAITH_RELEASE := 22.02
 

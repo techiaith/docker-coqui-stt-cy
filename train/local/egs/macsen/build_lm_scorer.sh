@@ -9,9 +9,9 @@ output_dir=/export/coqui_${COQUI_RELEASE}_${TECHIAITH_RELEASE}/macsen/kenlm
 alphabet_file_path=/code/bin/bangor_welsh/alphabet.txt
 
 # From optimize_lm_scorer.sh and /data/corpws-profi-adnabod-lleferydd/data/macsen/clips/clips.csv
-# Best params: lm_alpha=1.1882530535955231 and lm_beta=4.610254381168765 with WER=0.14555145551455514
-default_alpha=1.1882530535955231
-default_beta=4.610254381168765
+# Best params: lm_alpha=1.3569014286213879 and lm_beta=4.382943647381376 with WER=0.07770632368703108
+default_alpha=1.3569014286213879
+default_beta=4.382943647381376
 
 set +x
 echo "####################################################################################"
