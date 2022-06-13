@@ -2,7 +2,7 @@ default: build
 
 # please remember to update COQUI_RELEASE also in the Dockerfile
 COQUI_RELEASE := 1.3.0
-TECHIAITH_RELEASE := 22.04
+TECHIAITH_RELEASE := 22.06
 
 build:
 	if [ ! -d "checkpoints/coqui" ]; then \
