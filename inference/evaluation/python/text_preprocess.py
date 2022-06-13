@@ -13,5 +13,8 @@ def cleanup(sentence):
     sentence = sentence.replace('\u201D',"")
     sentence = sentence.replace('ñ',"n")
     sentence = sentence.replace(" - "," ")
+
+    sentence = " ".join(sentence.strip().split())
+    
     return sentence
 

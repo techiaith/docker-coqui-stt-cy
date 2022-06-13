@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+
 ### Force UTF-8 output
 export PYTHONIOENCODING=utf-8
 
@@ -23,9 +24,11 @@ echo "##########################################################################
 echo "#### Preparing training data                                                    ####"
 echo "####################################################################################"
 set -x
+test_files=${commonvoice_data_dir}/clips/test.csv
 #train_files=${commonvoice_data_dir}/clips/validated.csv,${commonvoice_data_dir}/clips/other.csv
+#train_files=${commonvoice_data_dir}/clips/train.csv,${commonvoice_data_dir}/clips/dev.csv
 train_files=${commonvoice_data_dir}/clips/validated.csv
-single_train_csv=${commonvoice_data_dir}/clips/training_macsen.csv
+single_train_csv=${commonvoice_data_dir}/clips/training_transcription.csv
 python3 ${SCRIPT_DIR}/../shared/python/combine_csvs.py --in_csvs ${train_files} --out_csv ${single_train_csv}
 
 
@@ -39,7 +42,7 @@ set -x
 checkpoint_dir=/checkpoints
 
 checkpoint_en_dir="${checkpoint_dir}/en"
-checkpoint_cy_dir="${checkpoint_dir}/cy-macsen"
+checkpoint_cy_dir="${checkpoint_dir}/cy-transcription"
 
 rm -rf ${checkpoint_en_dir}
 rm -rf ${checkpoint_cy_dir}
@@ -49,6 +52,7 @@ mkdir -p ${checkpoint_cy_dir}
 
 cp -rv /checkpoints/coqui/coqui-en-checkpoint/* $checkpoint_en_dir
 
+export CUDA_VISIBLE_DEVICES=0
 
 ###
 set +x
@@ -62,15 +66,9 @@ python3 -m coqui_stt_training.train \
 	--train_batch_size 64 \
 	--drop_source_layers 2 \
 	--epochs 15 \
+	--use_allow_growth true \
 	--alphabet_config_path "${alphabet_cy_file}" \
 	--load_checkpoint_dir "${checkpoint_en_dir}" \
 	--save_checkpoint_dir "${checkpoint_cy_dir}"
 
-
-set +x
-echo
-echo "####################################################################################"
-echo "#### Exported acoustic models can be found in ${export_dir} "
-echo "####################################################################################"
-set -x
 

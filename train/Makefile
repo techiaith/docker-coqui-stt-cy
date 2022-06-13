@@ -1,8 +1,8 @@
 default: build
 
 # please remember to update COQUI_RELEASE also in the Dockerfile
-COQUI_RELEASE := 1.2.0
-TECHIAITH_RELEASE := 22.02
+COQUI_RELEASE := 1.3.0
+TECHIAITH_RELEASE := 22.04
 
 build:
 	if [ ! -d "checkpoints/coqui" ]; then \
@@ -38,6 +38,6 @@ stop:
 
 
 clean: stop
-	-docker rmi techiaith/coqui-train:v${COQUI_RELEASE}
+	-docker rmi techiaith/coqui-stt-train:v${COQUI_RELEASE}
 	-docker rmi coqui-ai/coqui-train:v${COQUI_RELEASE}	
 	sudo rm -rf checkpoints

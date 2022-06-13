@@ -2,26 +2,32 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-VOCAB_SIZE=1000
+VOCAB_SIZE=50000
 
-output_dir=/export/coqui_${COQUI_RELEASE}_${TECHIAITH_RELEASE}/macsen/kenlm   
+output_dir=/export/coqui_${COQUI_RELEASE}_${TECHIAITH_RELEASE}/transcription/kenlm   
+
+alphabet_file_path=/code/bin/bangor_welsh/alphabet.txt
 
 checkpoint_dir=/checkpoints
-checkpoint_cy_dir="${checkpoint_dir}/cy-macsen"
+checkpoint_cy_dir="${checkpoint_dir}/cy-transcription"
 
-# From optimize_lm_scorer.sh and /data/corpws-profi-adnabod-lleferydd/data/macsen/clips/clips.csv
-# Best params: lm_alpha=2.0338177152076353 and lm_beta=4.80314980428912 with WER=0.030010718113612004
-default_alpha=2.0338177152076353
-default_beta=4.80314980428912
+test_dir=/data/commonvoice9
+test_file=${test_dir}/clips/test.csv
+
+
+# From optimize_lm_scorer.sh and common voice test.csv
+#Best params: lm_alpha=0.8458294848969132 and lm_beta=1.3796404742246355 with WER=0.39648550646898534
+default_alpha=0.8458294848969132
+default_beta=1.3796404742246355
 
 set +x
 echo "####################################################################################"
 echo "####                                                                            ####"
-echo "#### Fetching Macsen text corpus                                                ####"
+echo "#### Fetching OSCAR  text corpus                                                ####"
 echo "####                                                                            ####"
 echo "####################################################################################"
 set -x
-python3 ${SCRIPT_DIR}/python/download_macsen_corpus.py 
+python3 ${SCRIPT_DIR}/python/download_oscar.py 
 
 
 set +x
@@ -33,7 +39,7 @@ echo "##########################################################################
 set -x
 mkdir -p ${output_dir}
 python3 /code/data/lm/generate_lm.py \
-    --input_txt /lm-data/macsen/corpus.txt \
+    --input_txt /lm-data/transcription/corpus.txt \
     --output_dir ${output_dir} \
     --top_k ${VOCAB_SIZE} \
     --kenlm_bins /code/kenlm/build/bin \
@@ -61,6 +67,20 @@ set -x
 	--checkpoint ${checkpoint_cy_dir} \
 	--lm ${output_dir}/lm.binary \
 	--vocab ${output_dir}/vocab-${VOCAB_SIZE}.txt \
-	--package ${output_dir}/../kenlm.macsen.scorer \
+	--package ${output_dir}/../kenlm.transcription.scorer \
  	--default_alpha ${default_alpha} \
 	--default_beta ${default_beta}
+
+
+###
+set +x
+echo
+echo "####################################################################################"
+echo "#### Test to see what WER and CER we get from using an additional scorer        ####"
+echo "####################################################################################"
+set -x
+python3 -m coqui_stt_training.evaluate \
+	--test_files ${test_file} \
+	--alphabet_config_path ${alphabet_file_path} \
+	--checkpoint_dir ${checkpoint_cy_dir} \
+	--scorer_path ${output_dir}/../kenlm.transcription.scorer

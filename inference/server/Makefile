@@ -10,11 +10,11 @@ config:
 
 build: config
 	if [ ! -d "models/${MODEL_NAME}" ]; then \
-        mkdir -p models/${MODEL_NAME}; \
-        cd models/${MODEL_NAME} && \
+            mkdir -p models/${MODEL_NAME}; \
+            cd models/${MODEL_NAME}; \
 	    wget https://github.com/techiaith/docker-coqui-stt-cy/releases/download/${MODEL_VERSION}/techiaith_bangor_${MODEL_VERSION}.tflite;\
-	    wget https://github.com/techiaith/docker-coqui-stt-cy/releases/download/${MODEL_VERSION}/techiaith_bangor_${MODEL_NAME}_${MODEL_VERSION}.scorer;\		
-    fi
+	    wget https://github.com/techiaith/docker-coqui-stt-cy/releases/download/${MODEL_VERSION}/techiaith_bangor_${MODEL_NAME}_${MODEL_VERSION}.scorer;\
+	fi
 	docker build --rm -t techiaith/coqui-stt-${COQUI_VERSION}-server:${MODEL_NAME}_${MODEL_VERSION} \
 		--build-arg COQUI_VERSION=${COQUI_VERSION} \
 		--build-arg MODEL_NAME=${MODEL_NAME} \
@@ -46,7 +46,7 @@ stop: config
 
 clean: config stop
 	-docker rmi techiaith/coqui-stt-${COQUI_VERSION}-server:${MODEL_NAME}_${MODEL_VERSION}
-
+	rm -rf ${PWD}/models/${MODEL_NAME}
 
 test: config
 	curl -F 'soundfile=@question.wav' http://localhost:${PORT_NUMBER}/speech_to_text/
