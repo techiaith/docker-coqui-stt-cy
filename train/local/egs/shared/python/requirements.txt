@@ -1,1 +1,4 @@
 datasets
+wave
+python_speech_features
+librosa

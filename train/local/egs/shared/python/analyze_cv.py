@@ -5,12 +5,19 @@ import sys
 import pathlib
 import librosa
 import pandas
+import wave
 
+import numpy as np
+import scipy.io.wavfile as wav
+
+from python_speech_features import mfcc
 from argparse import ArgumentParser, RawTextHelpFormatter
 
 DESCRIPTION = """
 
 """
+
+N_CONTEXT=9
 
 def panda_group(df, column, destination_file_path):
 
@@ -68,10 +75,50 @@ def analyze_csvs(cv_root_dir):
         print (df_grouped.nlargest(n=5, columns='count'))
         print ('\n')
 
+
+def audiofile_to_input_vector(audio_filename, numcep, numcontext):
+    """
+    Given a WAV audio file at ``audio_filename``, calculates ``numcep`` MFCC features
+    at every 0.01s time step with a window length of 0.025s. Appends ``numcontext``
+    context frames to the left and right of each time step, and returns this data
+    in a numpy array.
+    """
+    # Load wav files
+    fs, audio = wav.read(audio_filename)
+
+    # Get mfcc coefficients
+    features = mfcc(audio, samplerate=fs, numcep=numcep, winlen=0.032, winstep=0.02, winfunc=np.hamming)
+
+    # Add empty initial and final contexts
+    empty_context = np.zeros((numcontext, numcep), dtype=features.dtype)
+    features = np.concatenate((empty_context, features, empty_context))
+
+    return features
+
+def is_feasible_transcription(wavfile, transcription):
+    aftiv_length=audiofile_to_input_vector(wavfile, 26, N_CONTEXT).shape[0] - 2*N_CONTEXT
+    return aftiv_length > len(transcription)
+
+
+def verify_csvs(cv_root_dir):
+
+    clips_dir = os.path.join(cv_root_dir, "clips")
+    csv_files = pathlib.Path(clips_dir).glob("*.csv")
+
+    for csv_file_path in csv_files:
+        print ("Verifying CSV: {}".format(csv_file_path))
+        df = pandas.read_csv(csv_file_path, encoding='utf-8')
         
+        for index, row in df.iterrows():
+            wav_file_path = os.path.join(cv_root_dir, "clips", row["wav_filename"])
+            transcription = row["transcript"]
+            if is_feasible_transcription(wav_file_path, transcription) == False:
+                print (wav_file_path, '\t', transcription)
+
 def main(cv_root_dir, **args):
 
-    analyze_tsvs(cv_root_dir)
+    #verify_csvs(cv_root_dir) 
+    #analyze_tsvs(cv_root_dir)
     analyze_csvs(cv_root_dir)
 
     

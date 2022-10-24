@@ -1,8 +1,8 @@
 default: build
 
 # please remember to update COQUI_RELEASE also in the Dockerfile
-COQUI_RELEASE := 1.3.0
-TECHIAITH_RELEASE := 22.06
+COQUI_RELEASE := 1.4.0
+TECHIAITH_RELEASE := 22.10
 
 build:
 	if [ ! -d "checkpoints/coqui" ]; then \
@@ -21,7 +21,7 @@ build:
 	docker build --rm -t techiaith/coqui-stt-train:v${COQUI_RELEASE} .
 
 run: 
-	docker run --gpus all --name techiaith-coqui-train-v${COQUI_RELEASE}-${USER} -it \
+	docker run --gpus '"device=0"' --name techiaith-coqui-train-v${COQUI_RELEASE} -it \
 		--shm-size=1g --ulimit memlock=-1 --ulimit stack=67108864 \
 		-v ${PWD}/data/:/data \
 		-v ${PWD}/checkpoints/:/checkpoints \
@@ -33,11 +33,11 @@ run:
 
 
 stop:
-	-docker stop techiaith-coqui-train-v${COQUI_RELEASE}-${USER}
-	-docker rm techiaith-coqui-train-v${COQUI_RELEASE}-${USER}
+	-docker stop techiaith-coqui-train-v${COQUI_RELEASE}
+	-docker rm techiaith-coqui-train-v${COQUI_RELEASE}
 
 
 clean: stop
 	-docker rmi techiaith/coqui-stt-train:v${COQUI_RELEASE}
-	-docker rmi coqui-ai/coqui-train:v${COQUI_RELEASE}	
+	-docker rmi ghcr.io/coqui-ai/stt-train:v${COQUI_RELEASE}	
 	sudo rm -rf checkpoints

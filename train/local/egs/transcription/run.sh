@@ -8,5 +8,6 @@ echo ${SCRIPT_DIR}
 #${SCRIPT_DIR}/export_coqui_stt.sh
 #${SCRIPT_DIR}/evaluate_coqui_stt.sh
 ${SCRIPT_DIR}/build_lm_scorer.sh 
-${SCRIPT_DIR}/optimize_lm_scorer.sh 
+#${SCRIPT_DIR}/optimize_lm_scorer.sh 
+${SCRIPT_DIR}/evaluate_coqui_stt.sh
     

@@ -39,7 +39,7 @@ echo "##########################################################################
 echo "#### Export new Welsh checkpoint to frozen model                                ####"
 echo "####################################################################################"
 set -x
-python3 -m coqui_stt_training.export \
+/tflite-venv/bin/python -m coqui_stt_training.export \
 	--checkpoint_dir "${checkpoint_cy_dir}" \
 	--alphabet_config_path "${alphabet_cy_file}" \
 	--export_dir "${export_dir}"

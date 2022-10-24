@@ -1,4 +1,7 @@
-FROM ghcr.io/coqui-ai/stt-train:v1.3.0
+FROM ghcr.io/coqui-ai/stt-train:v1.4.0
+
+RUN apt update -q \
+ && apt install -y -qq libboost-program-options-dev libboost-thread-dev
 
 ENV PATH /code/native_client:/usr/local/src/kenlm/build/bin:$PATH
 ENV PYTHONPATH $PYTHONPATH:/code/bin/bangor_welsh/egs/shared/python

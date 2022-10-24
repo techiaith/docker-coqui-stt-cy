@@ -6,8 +6,9 @@ export PYTHONIOENCODING=utf-8
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-commonvoice_data_dir=/data/commonvoice9
+commonvoice_data_dir=/data/commonvoice11
 alphabet_cy_file=/code/bin/bangor_welsh/alphabet.txt
+
 export_dir=/export/coqui_${COQUI_RELEASE}_${TECHIAITH_RELEASE}/transcription
 
 set +x
@@ -28,7 +29,6 @@ set -x
 
 checkpoint_dir=/checkpoints
 
-checkpoint_en_dir="${checkpoint_dir}/en"
 checkpoint_cy_dir="${checkpoint_dir}/cy-transcription"
 
 
@@ -41,6 +41,7 @@ echo "##########################################################################
 set -x
 python3 -m coqui_stt_training.evaluate \
 	--test_files ${test_files} \
+	--test_batch_size 8 \
 	--alphabet_config_path "${alphabet_cy_file}" \
 	--checkpoint_dir ${checkpoint_cy_dir}
 
@@ -56,8 +57,8 @@ then
 	set -x
 	python3 -m coqui_stt_training.evaluate \
 		--test_files ${test_files} \
+		--test_batch_size 8 \
 		--alphabet_config_path ${alphabet_cy_file} \
 		--checkpoint_dir ${checkpoint_cy_dir} \
 		--scorer_path ${export_dir}/kenlm.transcription.scorer
 fi
-

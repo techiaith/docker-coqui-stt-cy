@@ -11,14 +11,14 @@ alphabet_file_path=/code/bin/bangor_welsh/alphabet.txt
 checkpoint_dir=/checkpoints
 checkpoint_cy_dir="${checkpoint_dir}/cy-transcription"
 
-test_dir=/data/commonvoice9
+test_dir=/data/commonvoice11
 test_file=${test_dir}/clips/test.csv
 
 
 # From optimize_lm_scorer.sh and common voice test.csv
-#Best params: lm_alpha=0.8458294848969132 and lm_beta=1.3796404742246355 with WER=0.39648550646898534
-default_alpha=0.8458294848969132
-default_beta=1.3796404742246355
+#Best params: lm_alpha=0.9654557488724579 and lm_beta=1.5250547174262943 with WER=0.3415967918337587
+default_alpha=0.9654557488724579
+default_beta=1.5250547174262943
 
 set +x
 echo "####################################################################################"
@@ -72,15 +72,3 @@ set -x
 	--default_beta ${default_beta}
 
 
-###
-set +x
-echo
-echo "####################################################################################"
-echo "#### Test to see what WER and CER we get from using an additional scorer        ####"
-echo "####################################################################################"
-set -x
-python3 -m coqui_stt_training.evaluate \
-	--test_files ${test_file} \
-	--alphabet_config_path ${alphabet_file_path} \
-	--checkpoint_dir ${checkpoint_cy_dir} \
-	--scorer_path ${output_dir}/../kenlm.transcription.scorer

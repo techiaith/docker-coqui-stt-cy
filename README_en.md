@@ -9,7 +9,7 @@
 ## Training
 
 This repository provides a Docker environment for training **acoustic models** that 
-can perform Welsh language speech recognition with the [coqui-stt (version 1.2)](https://github.com/coqui-ai/STT/releases/tag/v1.2.0) libary
+can perform Welsh language speech recognition with the [coqui-stt (version 1.4)](https://github.com/coqui-ai/STT/releases/tag/v1.4.0) libary
 
 This repository also provides a means to train and utilise KenLM based language models that significantly improves recognition results. 
 

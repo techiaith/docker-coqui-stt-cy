@@ -10,7 +10,7 @@
 
 Mae'r project yma yn darparu amgylchedd Docker sy'n hwyluso hyfforddi 
 **modelau acwsteg** ar gyfer wireddu adnabod lleferydd Cymraeg gyda'r 
-llyfrgell [coqui-stt (fersiwn 1.2)](https://github.com/coqui-ai/STT/releases/tag/v1.2.0)
+llyfrgell [coqui-stt (fersiwn 1.4)](https://github.com/coqui-ai/STT/releases/tag/v1.4.0)
 
 Defnyddir data gan project [Mozilla Common Voice](https://commonvoice.mozilla.org/cy/datasets) 
 ar gyfer hyfforddi'r modelau acwsteg.
