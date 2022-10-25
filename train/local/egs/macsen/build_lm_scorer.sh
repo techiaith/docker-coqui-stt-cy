@@ -10,9 +10,9 @@ checkpoint_dir=/checkpoints
 checkpoint_cy_dir="${checkpoint_dir}/cy-macsen"
 
 # From optimize_lm_scorer.sh and /data/corpws-profi-adnabod-lleferydd/data/macsen/clips/clips.csv
-# Best params: lm_alpha=2.0338177152076353 and lm_beta=4.80314980428912 with WER=0.030010718113612004
-default_alpha=2.0338177152076353
-default_beta=4.80314980428912
+# Best params: lm_alpha=2.133293646749722 and lm_beta=2.0808753060381404 with WER=0.03269024651661308
+default_alpha=2.133293646749722
+default_beta=2.0808753060381404
 
 set +x
 echo "####################################################################################"

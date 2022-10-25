@@ -2,9 +2,9 @@ default: build
 
 
 config:	
-	$(eval COQUI_VERSION = 1.2.0)
+	$(eval COQUI_VERSION = 1.4.0)
 	$(eval MODEL_NAME = macsen)
-	$(eval MODEL_VERSION = 22.02)
+	$(eval MODEL_VERSION = 22.10)
 	$(eval PORT_NUMBER = 5505)
 
 
